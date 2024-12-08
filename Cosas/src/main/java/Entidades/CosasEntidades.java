@@ -12,7 +12,7 @@ import lombok.Setter;
 public class CosasEntidades {
 
     @Id
-    private long idcosa;
+    private int idcosa;
     private String tipo;
     private String nombre;
     private String descripcion;
