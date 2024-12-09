@@ -1,5 +1,4 @@
 package com.LeH.cosas.dto;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +9,7 @@ public class CosasDTO {
     public String tipo;
     public String nombre;
     public String descripcion;
-    public Integer propietario;
+    private PersonasDTO propietario;  // Campo para la persona asociada
     public String status;
+
 }

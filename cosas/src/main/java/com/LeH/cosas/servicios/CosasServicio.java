@@ -10,4 +10,5 @@ public interface CosasServicio {
 
     List<CosasDTO> obtenerCosas ();
     List<CosasDTO> cosasPorId(Integer idcosa);
+    
 }

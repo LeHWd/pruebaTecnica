@@ -6,7 +6,9 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.LeH.cosas.cliente.CosasFeign;
 import com.LeH.cosas.dto.CosasDTO;
+import com.LeH.cosas.dto.PersonasDTO;
 import com.LeH.cosas.entidades.CosasEntidades;
 import com.LeH.cosas.repositorio.CosasRepositorio;
 
@@ -16,6 +18,9 @@ public class CosasImpl implements CosasServicio {
 
     @Autowired
     private CosasRepositorio cosasRepositorio;
+
+    @Autowired
+    private CosasFeign personasFeignClient;  // Inyectamos el cliente Feign
 
     @Override
     public List<CosasDTO> obtenerCosas() {
@@ -39,8 +44,12 @@ public class CosasImpl implements CosasServicio {
         cosaDTO.setTipo(cosa.getTipo());
         cosaDTO.setNombre(cosa.getNombre());
         cosaDTO.setDescripcion(cosa.getDescripcion());
-        cosaDTO.setPropietario(cosa.getPropietario());
+        //cosaDTO.setPropietario(cosa.getPropietario());
         cosaDTO.setStatus(cosa.getStatus());
+
+        PersonasDTO persona = personasFeignClient.obtenerPersonaPorId(cosa.getPropietario());  // Llamada Feign
+        cosaDTO.setPropietario(persona);
+
         return cosaDTO;  // Devolvemos un solo DTO
     }
 }
