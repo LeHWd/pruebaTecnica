@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 public class CosasEntidades {
     @Id
-    public int idcosa;
+    public Integer idcosa;
     public String tipo;
     public String nombre;
     public String descripcion;

@@ -31,7 +31,12 @@ public class PersonasController {
     @GetMapping("/{idpersona}")
     public ResponseEntity<PersonasDTO> obtenerPersonaPorId(@PathVariable Integer idpersona) {
         Optional<PersonasDTO> persona = personasService.obtenerPersonaPorId(idpersona);
-        return persona.map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        return persona.isPresent() ? ResponseEntity.ok(persona.get()) : ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/cosas/{propietario}")
+    public ResponseEntity<List<PersonasDTO>> obtenerCosasPorPropietario(@PathVariable Integer propietario) {
+        List<PersonasDTO> personas = personasService.obtenerCosasPorPropietario(propietario);
+        return personas != null ? ResponseEntity.ok(personas) : ResponseEntity.notFound().build();
     }
 }

@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.LeH.personas.client.PersonasFeign;
+import com.LeH.personas.dto.CosasDTO;
 import com.LeH.personas.dto.PersonasDTO;
 import com.LeH.personas.entities.PersonaEntities;
 import com.LeH.personas.repo.PersonaRepo;
@@ -16,6 +18,9 @@ public class PersonaSerImpl implements PersonasService {
 
     @Autowired
     private PersonaRepo personaRepo;
+
+    @Autowired
+    private PersonasFeign personasFeign;
 
     @Override
     public List<PersonasDTO> obtenerPersonas() {
@@ -34,6 +39,16 @@ public class PersonaSerImpl implements PersonasService {
                 .collect(Collectors.toList());
     }
 
+    // Método para obtener "cosas" por propietario (usando Feign)
+    @Override
+    public List<PersonasDTO> obtenerCosasPorPropietario(Integer propietario) {
+   
+    List<CosasDTO> cosas = personasFeign.obtenerCosasPorPropietario(propietario);
+    PersonasDTO personaDTO = new PersonasDTO();
+    personaDTO.setCosas(cosas);
+    return List.of(personaDTO);
+    }
+
     @Override
     public Optional<PersonasDTO> obtenerPersonaPorId(Integer idpersona) {
         Optional<PersonaEntities> persona = personaRepo.findByIdpersona(idpersona);
@@ -46,6 +61,11 @@ public class PersonaSerImpl implements PersonasService {
             dto.setEdad(personaEntity.getEdad());
             dto.setGenero(personaEntity.getGenero());
             dto.setStatus(personaEntity.getStatus());
+            
+            // Obtener las "cosas" asociadas a esta persona
+            List<CosasDTO> cosas = personasFeign.obtenerCosasPorPropietario(personaEntity.getIdpersona());
+            dto.setCosas(cosas);
+            
             return dto;
         });
     }
