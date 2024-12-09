@@ -14,7 +14,7 @@ import com.LeH.personas.Servicies.PersonasService;
 import com.LeH.personas.dto.PersonasDTO;
 
 @RestController
-@RequestMapping("/api/personas")
+@RequestMapping("/personas")
 public class PersonasController {
 
     @Autowired
