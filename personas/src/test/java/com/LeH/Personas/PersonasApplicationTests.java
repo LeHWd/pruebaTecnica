@@ -1,4 +1,4 @@
-package com.LeH.Personas;
+package com.LeH.personas;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
