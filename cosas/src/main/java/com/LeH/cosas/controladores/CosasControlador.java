@@ -33,19 +33,22 @@ public class CosasControlador {
     return cosa != null ? ResponseEntity.ok(cosa) : ResponseEntity.notFound().build();
   }
 
-    @GetMapping("/detallado")
-    public ResponseEntity<List<CosasDetalladoDTO>> cosasDetallado() {
-        List<CosasDetalladoDTO> cosas = cosasServicio.cosasDetallado();
-        return cosas != null && !cosas.isEmpty() ? ResponseEntity.ok(cosas) : ResponseEntity.notFound().build();
-    }
-/*
-    @GetMapping("/por-propietario/{propietario}")
-    public ResponseEntity<List<CosasDTO>> cosasPorPropietario(@PathVariable Integer propietario) {
-        List<CosasDTO> cosas = cosasServicio.cosasPorPropietario(propietario);
-        return cosas.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(cosas);
+  @GetMapping("/por-propietario/{propietario}")
+    public ResponseEntity<List<CosasDTO>> obtenerCosasPorPropietario(@PathVariable Integer propietario) {
+        List<CosasDTO> cosas = cosasServicio.obtenerCosasPorPropietario(propietario);
+        return cosas != null ? ResponseEntity.ok(cosas) : ResponseEntity.notFound().build();
     }
 
-   
+    @GetMapping("/detallado")
+    public ResponseEntity<List<CosasDetalladoDTO>> cosasDetalladas() {
+        List<CosasDetalladoDTO> cosas = cosasServicio.cosasDetalladas();
+        return cosas != null && !cosas.isEmpty() ? ResponseEntity.ok(cosas) : ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/detallado/{propietario}")
+        public ResponseEntity<List<CosasDetalladoDTO>> cosasDetallado(@PathVariable Integer propietario) {
+        List<CosasDetalladoDTO> cosas = cosasServicio.cosasDetallado(propietario); // Pasas el propietario al servicio
+        return cosas != null && !cosas.isEmpty() ? ResponseEntity.ok(cosas) : ResponseEntity.notFound().build();
 }
-*/
+
 }

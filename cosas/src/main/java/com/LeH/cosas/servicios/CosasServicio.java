@@ -11,6 +11,7 @@ public interface CosasServicio {
 
     List<CosasDTO> obtenerCosas ();
     List<CosasDTO> cosasPorId(Integer idcosa);
-    //List<CosasDTO> cosasPorPropietario(Integer propietario);
-    List<CosasDetalladoDTO> cosasDetallado();
+    List<CosasDTO> obtenerCosasPorPropietario(Integer propietario);
+    List<CosasDetalladoDTO> cosasDetallado(Integer propietario);
+    List<CosasDetalladoDTO> cosasDetalladas();
 }

@@ -19,9 +19,9 @@ public interface CosasRepositorio extends JpaRepository <CosasEntidades, Integer
  
     @Query(value = "select * from cosas where idcosa = :idcosa", nativeQuery = true)
     List<CosasEntidades> CosaPorId(Integer idcosa);
-/*
+
     @Query(value = "select * from cosas where propietario = :propietario", nativeQuery = true)
     List<CosasEntidades> CosasPorPropietario(@Param("propietario") Integer propietario);
-*/
+
     }
 

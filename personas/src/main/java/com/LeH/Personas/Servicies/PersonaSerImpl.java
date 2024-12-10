@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.LeH.personas.client.PersonasFeign;
 import com.LeH.personas.dto.CosasDTO;
 import com.LeH.personas.dto.PersonasDTO;
+import com.LeH.personas.dto.PersonasDetalladoDTO;
 import com.LeH.personas.entities.PersonaEntities;
 import com.LeH.personas.repo.PersonaRepo;
 
@@ -40,14 +41,7 @@ public class PersonaSerImpl implements PersonasService {
     }
 
     // Método para obtener "cosas" por propietario (usando Feign)
-    @Override
-    public List<PersonasDTO> obtenerCosasPorPropietario(Integer propietario) {
-   
-    List<CosasDTO> cosas = personasFeign.obtenerCosasPorPropietario(propietario);
-    PersonasDTO personaDTO = new PersonasDTO();
-    personaDTO.setCosas(cosas);
-    return List.of(personaDTO);
-    }
+    
 
     @Override
     public Optional<PersonasDTO> obtenerPersonaPorId(Integer idpersona) {
@@ -61,12 +55,64 @@ public class PersonaSerImpl implements PersonasService {
             dto.setEdad(personaEntity.getEdad());
             dto.setGenero(personaEntity.getGenero());
             dto.setStatus(personaEntity.getStatus());
-            
-            // Obtener las "cosas" asociadas a esta persona
-            List<CosasDTO> cosas = personasFeign.obtenerCosasPorPropietario(personaEntity.getIdpersona());
-            dto.setCosas(cosas);
-            
             return dto;
         });
     }
+
+    @Override
+public List<PersonasDetalladoDTO> obtenerTodasLasPersonasDetalladas() {
+    // Obtenemos todas las personas
+    List<PersonaEntities> personasEntities = personaRepo.findAll();
+    
+    // Mapeamos las entidades de persona a DTO de detalle
+    return personasEntities.stream()
+            .map(persona -> {
+                // Creamos el DTO para la persona detallada
+                PersonasDetalladoDTO dto = new PersonasDetalladoDTO();
+                dto.setIdpersona(persona.getIdpersona());
+                dto.setNombres(persona.getNombres());
+                dto.setApellidos(persona.getApellidos());
+                dto.setEdad(persona.getEdad());
+                dto.setGenero(persona.getGenero());
+                dto.setStatus(persona.getStatus());
+                
+                // Obtenemos las "cosas" asociadas a esta persona
+                List<CosasDTO> cosas = personasFeign.obtenerCosasPorPropietario(persona.getIdpersona());
+                dto.setCosas(cosas);
+                
+                return dto;
+            })
+            .collect(Collectors.toList());
+}
+
+    @Override
+    public PersonasDetalladoDTO obtenerPersonaDetallada(Integer idpersona) {
+        // Obtener la persona de la base de datos
+        Optional<PersonaEntities> personaEntity = personaRepo.findByIdpersona(idpersona);
+
+        if (personaEntity.isPresent()) {
+            PersonaEntities persona = personaEntity.get();
+
+            // Mapear los datos básicos a PersonasDetalladoDTO
+            PersonasDetalladoDTO detalladoDTO = new PersonasDetalladoDTO();
+            detalladoDTO.setIdpersona(persona.getIdpersona());
+            detalladoDTO.setNombres(persona.getNombres());
+            detalladoDTO.setApellidos(persona.getApellidos());
+            detalladoDTO.setEdad(persona.getEdad());
+            detalladoDTO.setGenero(persona.getGenero());
+            detalladoDTO.setStatus(persona.getStatus());
+
+            // Obtener las cosas asociadas mediante Feign
+            List<CosasDTO> cosas = personasFeign.obtenerCosasPorPropietario(idpersona);
+            detalladoDTO.setCosas(cosas);
+
+            return detalladoDTO;
+        }
+
+        // Si no se encuentra la persona, retornar null (podrías lanzar una excepción personalizada si lo prefieres)
+        return null;
+    }
+
+    
+
 }

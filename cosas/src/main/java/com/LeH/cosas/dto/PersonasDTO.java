@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PersonasDTO {
-    private Integer idPersona;
+    private Integer idpersona;
     private String nombres;
     private String apellidos;
     private Integer edad;

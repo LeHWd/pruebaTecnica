@@ -46,46 +46,73 @@ public class CosasImpl implements CosasServicio {
         }
     }
 
-     @Override
-     public List<CosasDetalladoDTO> cosasDetallado() {
+    public List<CosasDetalladoDTO> cosasDetalladas() {
         // Recuperamos todas las cosas
-        List<CosasEntidades> cosas = cosasRepositorio.findAll();  
+        List<CosasEntidades> cosas = cosasRepositorio.encontrarCosas();  
 
         return cosas.stream()
                     .map(cosa -> {
+                        // Mapeo de las propiedades de cada "cosa"
                         CosasDetalladoDTO dto = new CosasDetalladoDTO();
                         dto.setIdcosa(cosa.getIdcosa());
                         dto.setTipo(cosa.getTipo());
                         dto.setNombre(cosa.getNombre());
                         dto.setDescripcion(cosa.getDescripcion());
-                        dto.setPropietario(cosa.getPropietario());
                         dto.setStatus(cosa.getStatus());
 
-                        // Usamos el Feign Client para obtener los detalles de la persona
+                        // Usamos el Feign Client para obtener los detalles de cada propietario
                         var persona = personasFeignClient.obtenerPersonaPorId(cosa.getPropietario());
                         if (persona != null) {
-                            dto.setNombresPropietario(persona.getNombres());
-                            dto.setApellidosPropietario(persona.getApellidos());                         
-                            dto.setEdadPropietario(persona.getEdad());
-                            dto.setGeneroPropietario(persona.getGenero());
-                            dto.setStatusPropietario(persona.getStatus());
-                                
-
-                         }
+                            // Asignamos el objeto PersonasDTO al campo propietario
+                            dto.setPropietario(persona);
+                        }
 
                         return dto;
                     })
                     .collect(Collectors.toList());
     }
-/*
-    @Override
-    public List<CosasDTO> cosasPorPropietario(Integer propietario) {
-        List<CosasEntidades> cosas = cosasRepositorio.CosasPorPropietario(propietario);
+
+    public List<CosasDetalladoDTO> cosasDetallado(Integer propietario) {
+        List<CosasEntidades> cosas = cosasRepositorio.CosasPorPropietario(propietario);  
         return cosas.stream()
-                    .map(this::mapearCosaConPropietario) // Usamos el mapeo con propietario
+                    .map(cosa -> {
+                        // Mapeo de cosas
+                        CosasDetalladoDTO dto = new CosasDetalladoDTO();
+                        dto.setIdcosa(cosa.getIdcosa());
+                        dto.setTipo(cosa.getTipo());
+                        dto.setNombre(cosa.getNombre());
+                        dto.setDescripcion(cosa.getDescripcion());
+                       
+                        dto.setStatus(cosa.getStatus());
+   
+                        // Obtener datos de la persona
+                        var persona = personasFeignClient.obtenerPersonaPorId(cosa.getPropietario());
+                            if (persona != null) {
+                                // Asignamos el objeto PersonasDTO al campo propietarioDTO
+                                dto.setPropietario(persona);  
+                            }
+   
+                        return dto;
+                    })
                     .collect(Collectors.toList());
     }
-  */
+    public List<CosasDTO> obtenerCosasPorPropietario(Integer propietario) {
+        List<CosasEntidades> cosasEntidades = cosasRepositorio.CosasPorPropietario(propietario);
+        return cosasEntidades.stream()
+            .map(cosa -> {
+                CosasDTO dto = new CosasDTO();
+                dto.setIdcosa(cosa.getIdcosa());
+                dto.setTipo(cosa.getTipo());
+                dto.setNombre(cosa.getNombre());
+                dto.setDescripcion(cosa.getDescripcion());
+                dto.setPropietario(cosa.getPropietario());
+                dto.setStatus(cosa.getStatus());
+                return dto;
+            })
+            .collect(Collectors.toList());
+}
+                        
+
     private CosasDTO mapearCosaSinPropietario(CosasEntidades cosa) {
         CosasDTO cosaDTO = new CosasDTO();
         cosaDTO.setIdcosa(cosa.getIdcosa());
@@ -101,20 +128,4 @@ public class CosasImpl implements CosasServicio {
         return cosaDTO;
     }
  
-    /* 
-    private CosasDTO mapearCosaConPropietario(CosasEntidades cosa) {
-        CosasDTO cosaDTO = new CosasDTO();
-        cosaDTO.setIdcosa(cosa.getIdcosa());
-        cosaDTO.setTipo(cosa.getTipo());
-        cosaDTO.setNombre(cosa.getNombre());
-        cosaDTO.setDescripcion(cosa.getDescripcion());
-        cosaDTO.setStatus(cosa.getStatus());
-    
-        // Mapeo del propietario (llamado a FeignClient)
-        PersonasDTO persona = personasFeignClient.obtenerPersonaPorId(cosa.getPropietario());
-        cosaDTO.setPropietario(persona);
-    
-        return cosaDTO;
-    }
-        */
 }

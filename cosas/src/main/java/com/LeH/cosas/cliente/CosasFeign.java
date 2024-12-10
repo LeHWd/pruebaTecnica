@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.LeH.cosas.dto.PersonasDTO;
 
-@FeignClient(name = "persona-service", url = "http://localhost:8081")  // Asegúrate de que la URL corresponda al servicio de Personas
+@FeignClient(name = "persona-service", url = "http://localhost:8081")
 public interface CosasFeign {
 
     @GetMapping("/personas/{idpersona}")

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.LeH.personas.Servicies.PersonasService;
 import com.LeH.personas.dto.PersonasDTO;
+import com.LeH.personas.dto.PersonasDetalladoDTO;
 
 @RestController
 @RequestMapping("/personas")
@@ -34,9 +35,15 @@ public class PersonasController {
         return persona.isPresent() ? ResponseEntity.ok(persona.get()) : ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/cosas/{propietario}")
-    public ResponseEntity<List<PersonasDTO>> obtenerCosasPorPropietario(@PathVariable Integer propietario) {
-        List<PersonasDTO> personas = personasService.obtenerCosasPorPropietario(propietario);
-        return personas != null ? ResponseEntity.ok(personas) : ResponseEntity.notFound().build();
+    @GetMapping("/detallado")
+    public ResponseEntity<List<PersonasDetalladoDTO>> obtenerTodasLasPersonasDetalladas() {
+    List<PersonasDetalladoDTO> personasDetalladas = personasService.obtenerTodasLasPersonasDetalladas();
+    return !personasDetalladas.isEmpty() ? ResponseEntity.ok(personasDetalladas) : ResponseEntity.noContent().build();
+}
+
+    @GetMapping("/detallado/{idpersona}")
+    public ResponseEntity<PersonasDetalladoDTO> obtenerPersonaDetallada(@PathVariable Integer idpersona) {
+        PersonasDetalladoDTO personaDetallada = personasService.obtenerPersonaDetallada(idpersona);
+        return personaDetallada != null ? ResponseEntity.ok(personaDetallada) : ResponseEntity.notFound().build();
     }
 }
