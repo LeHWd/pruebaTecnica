@@ -1,4 +1,4 @@
-package com.LeH.personas;
+package com.LeH.cosas;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,10 +8,10 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableDiscoveryClient
 @EnableFeignClients
 @SpringBootApplication
-public class PersonasApplication {
+public class CosasApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(PersonasApplication.class, args);
+		SpringApplication.run(CosasApplication.class, args);
 	}
 
 }
