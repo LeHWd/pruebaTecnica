@@ -17,7 +17,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.LeH.personas.Servicies.PersonaSerImpl;
-import com.LeH.personas.Servicies.PersonasService;
+
 import com.LeH.personas.client.PersonasFeign;
 import com.LeH.personas.dto.PersonasDTO;
 import com.LeH.personas.dto.PersonasDetalladoDTO;

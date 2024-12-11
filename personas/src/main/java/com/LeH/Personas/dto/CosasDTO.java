@@ -10,6 +10,6 @@ public class CosasDTO {
     private String tipo;
     private String nombre;
     private String descripcion;
-    private Integer propietario;
+    //private Integer propietario;
     private String status;
 }

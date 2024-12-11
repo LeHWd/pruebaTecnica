@@ -2,7 +2,7 @@ package com.LeH.cosas.servicios;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
+
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import com.LeH.cosas.cliente.CosasFeign;
 import com.LeH.cosas.dto.CosasDTO;
 import com.LeH.cosas.dto.CosasDetalladoDTO;
-import com.LeH.cosas.dto.PersonasDTO;
+
 import com.LeH.cosas.entidades.CosasEntidades;
 import com.LeH.cosas.repositorio.CosasRepositorio;
 
